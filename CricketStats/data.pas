@@ -1,0 +1,268 @@
+unit data;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB;
+
+type
+  TDatabase = class(TDataModule)
+    ADOConnection1: TADOConnection;
+    tbPlayer: TADOTable;
+    tbTeam: TADOTable;
+    tbPlayerPNum: TAutoIncField;
+    tbPlayerNames: TWideStringField;
+    tbPlayerSurname: TWideStringField;
+    tbPlayerDeleted: TBooleanField;
+    tbTeamNames: TWideStringField;
+    tbPlayerTelephone: TWideStringField;
+    tbPlayer_Stats_current: TADOTable;
+    tbPlayer_Stats_past: TADOTable;
+    qPlayerStats_current: TADOQuery;
+    qPlayerStats_past: TADOQuery;
+    qUpdatePlayerStats: TADOQuery;
+    tbPlayer_Stats_currentPNum: TIntegerField;
+    tbPlayer_Stats_currentDivision: TWideStringField;
+    tbPlayer_Stats_currentTeam: TWideStringField;
+    tbPlayer_Stats_currentRuns_Scored: TIntegerField;
+    tbPlayer_Stats_currentMatches_Bat: TIntegerField;
+    tbPlayer_Stats_currentMatches_Played: TIntegerField;
+    tbPlayer_Stats_currentBatting_Balls: TIntegerField;
+    tbPlayer_Stats_currentBatting_Strike: TFloatField;
+    tbPlayer_Stats_currentBatting_Avg: TFloatField;
+    tbPlayer_Stats_currentBatting_Ratting: TFloatField;
+    tbPlayer_Stats_currentNumber_50: TIntegerField;
+    tbPlayer_Stats_currentNumber_100: TIntegerField;
+    tbPlayer_Stats_currentBatting_High: TIntegerField;
+    tbPlayer_Stats_currentMatches_Bowled: TIntegerField;
+    tbPlayer_Stats_currentNumber_5: TIntegerField;
+    tbPlayer_Stats_currentOvers_Bowled: TFloatField;
+    tbPlayer_Stats_currentWides_Bowled: TIntegerField;
+    tbPlayer_Stats_currentNo_Bowled: TIntegerField;
+    tbPlayer_Stats_currentRuns_Bowled: TIntegerField;
+    tbPlayer_Stats_currentWickets: TIntegerField;
+    tbPlayer_Stats_currentBest_Bowled: TWideStringField;
+    tbPlayer_Stats_currentAvg_Bowled: TFloatField;
+    tbPlayer_Stats_currentEco_Bowled: TFloatField;
+    tbPlayer_Stats_currentBowling_Ratting: TFloatField;
+    qUpdatePlayerStatsPast: TADOQuery;
+    qPlayers: TADOQuery;
+    qPlayersPNum: TAutoIncField;
+    qPlayersNames: TWideStringField;
+    qPlayersSurname: TWideStringField;
+    qPlayersTelephone: TWideStringField;
+    qPlayersDeleted: TBooleanField;
+    qPlayerTeams: TADOQuery;
+    qPlayerTeamsPNum: TIntegerField;
+    qPlayerTeamsDivision: TWideStringField;
+    qPlayerTeamsTeam: TWideStringField;
+    qPlayerTeamsRuns_Scored: TIntegerField;
+    qPlayerTeamsMatches_Bat: TIntegerField;
+    qPlayerTeamsMatches_Played: TIntegerField;
+    qPlayerTeamsBatting_Balls: TIntegerField;
+    qPlayerTeamsBatting_Strike: TFloatField;
+    qPlayerTeamsBatting_Avg: TFloatField;
+    qPlayerTeamsBatting_Ratting: TFloatField;
+    qPlayerTeamsNumber_50: TIntegerField;
+    qPlayerTeamsNumber_100: TIntegerField;
+    qPlayerTeamsBatting_High: TIntegerField;
+    qPlayerTeamsMatches_Bowled: TIntegerField;
+    qPlayerTeamsNumber_5: TIntegerField;
+    qPlayerTeamsOvers_Bowled: TFloatField;
+    qPlayerTeamsWides_Bowled: TIntegerField;
+    qPlayerTeamsNo_Bowled: TIntegerField;
+    qPlayerTeamsRuns_Bowled: TIntegerField;
+    qPlayerTeamsWickets: TIntegerField;
+    qPlayerTeamsBest_Bowled: TWideStringField;
+    qPlayerTeamsAvg_Bowled: TFloatField;
+    qPlayerTeamsEco_Bowled: TFloatField;
+    qPlayerTeamsBowling_Ratting: TFloatField;
+    tbPlayer_Stats_pastPNum: TIntegerField;
+    tbPlayer_Stats_pastDivision: TWideStringField;
+    tbPlayer_Stats_pastTeam: TWideStringField;
+    tbPlayer_Stats_pastRuns_Scored: TIntegerField;
+    tbPlayer_Stats_pastMatches_Bat: TIntegerField;
+    tbPlayer_Stats_pastMatches_Played: TIntegerField;
+    tbPlayer_Stats_pastBatting_Balls: TIntegerField;
+    tbPlayer_Stats_pastBatting_Strike: TFloatField;
+    tbPlayer_Stats_pastBatting_Avg: TFloatField;
+    tbPlayer_Stats_pastBatting_Ratting: TFloatField;
+    tbPlayer_Stats_pastNumber_50: TIntegerField;
+    tbPlayer_Stats_pastNumber_100: TIntegerField;
+    tbPlayer_Stats_pastBatting_High: TIntegerField;
+    tbPlayer_Stats_pastMatches_Bowled: TIntegerField;
+    tbPlayer_Stats_pastNumber_5: TIntegerField;
+    tbPlayer_Stats_pastOvers_Bowled: TFloatField;
+    tbPlayer_Stats_pastWides_Bowled: TIntegerField;
+    tbPlayer_Stats_pastNo_Bowled: TIntegerField;
+    tbPlayer_Stats_pastRuns_Bowled: TIntegerField;
+    tbPlayer_Stats_pastWickets: TIntegerField;
+    tbPlayer_Stats_pastBest_Bowled: TWideStringField;
+    tbPlayer_Stats_pastAvg_Bowled: TFloatField;
+    tbPlayer_Stats_pastEco_Bowled: TFloatField;
+    tbPlayer_Stats_pastBowling_Ratting: TFloatField;
+    qUpdatePlayerStatsPNum: TIntegerField;
+    qUpdatePlayerStatsDivision: TWideStringField;
+    qUpdatePlayerStatsTeam: TWideStringField;
+    qUpdatePlayerStatsRuns_Scored: TIntegerField;
+    qUpdatePlayerStatsMatches_Bat: TIntegerField;
+    qUpdatePlayerStatsMatches_Played: TIntegerField;
+    qUpdatePlayerStatsBatting_Balls: TIntegerField;
+    qUpdatePlayerStatsBatting_Strike: TFloatField;
+    qUpdatePlayerStatsBatting_Avg: TFloatField;
+    qUpdatePlayerStatsBatting_Ratting: TFloatField;
+    qUpdatePlayerStatsNumber_50: TIntegerField;
+    qUpdatePlayerStatsNumber_100: TIntegerField;
+    qUpdatePlayerStatsBatting_High: TIntegerField;
+    qUpdatePlayerStatsMatches_Bowled: TIntegerField;
+    qUpdatePlayerStatsNumber_5: TIntegerField;
+    qUpdatePlayerStatsOvers_Bowled: TFloatField;
+    qUpdatePlayerStatsWides_Bowled: TIntegerField;
+    qUpdatePlayerStatsNo_Bowled: TIntegerField;
+    qUpdatePlayerStatsRuns_Bowled: TIntegerField;
+    qUpdatePlayerStatsWickets: TIntegerField;
+    qUpdatePlayerStatsBest_Bowled: TWideStringField;
+    qUpdatePlayerStatsAvg_Bowled: TFloatField;
+    qUpdatePlayerStatsEco_Bowled: TFloatField;
+    qUpdatePlayerStatsBowling_Ratting: TFloatField;
+    qUpdatePlayerStatsPastPNum: TIntegerField;
+    qUpdatePlayerStatsPastDivision: TWideStringField;
+    qUpdatePlayerStatsPastTeam: TWideStringField;
+    qUpdatePlayerStatsPastRuns_Scored: TIntegerField;
+    qUpdatePlayerStatsPastMatches_Bat: TIntegerField;
+    qUpdatePlayerStatsPastMatches_Played: TIntegerField;
+    qUpdatePlayerStatsPastBatting_Balls: TIntegerField;
+    qUpdatePlayerStatsPastBatting_Strike: TFloatField;
+    qUpdatePlayerStatsPastBatting_Avg: TFloatField;
+    qUpdatePlayerStatsPastBatting_Ratting: TFloatField;
+    qUpdatePlayerStatsPastNumber_50: TIntegerField;
+    qUpdatePlayerStatsPastNumber_100: TIntegerField;
+    qUpdatePlayerStatsPastBatting_High: TIntegerField;
+    qUpdatePlayerStatsPastMatches_Bowled: TIntegerField;
+    qUpdatePlayerStatsPastNumber_5: TIntegerField;
+    qUpdatePlayerStatsPastOvers_Bowled: TFloatField;
+    qUpdatePlayerStatsPastWides_Bowled: TIntegerField;
+    qUpdatePlayerStatsPastNo_Bowled: TIntegerField;
+    qUpdatePlayerStatsPastRuns_Bowled: TIntegerField;
+    qUpdatePlayerStatsPastWickets: TIntegerField;
+    qUpdatePlayerStatsPastBest_Bowled: TWideStringField;
+    qUpdatePlayerStatsPastAvg_Bowled: TFloatField;
+    qUpdatePlayerStatsPastEco_Bowled: TFloatField;
+    qUpdatePlayerStatsPastBowling_Ratting: TFloatField;
+    qWholeTeam: TADOQuery;
+    qWholeTeamPNum: TIntegerField;
+    qWholeTeamDivision: TWideStringField;
+    qWholeTeamTeam: TWideStringField;
+    qWholeTeamRuns_Scored: TIntegerField;
+    qWholeTeamMatches_Bat: TIntegerField;
+    qWholeTeamMatches_Played: TIntegerField;
+    qWholeTeamBatting_Balls: TIntegerField;
+    qWholeTeamBatting_Strike: TFloatField;
+    qWholeTeamBatting_Avg: TFloatField;
+    qWholeTeamBatting_Ratting: TFloatField;
+    qWholeTeamNumber_50: TIntegerField;
+    qWholeTeamNumber_100: TIntegerField;
+    qWholeTeamBatting_High: TIntegerField;
+    qWholeTeamMatches_Bowled: TIntegerField;
+    qWholeTeamNumber_5: TIntegerField;
+    qWholeTeamOvers_Bowled: TFloatField;
+    qWholeTeamWides_Bowled: TIntegerField;
+    qWholeTeamNo_Bowled: TIntegerField;
+    qWholeTeamRuns_Bowled: TIntegerField;
+    qWholeTeamWickets: TIntegerField;
+    qWholeTeamBest_Bowled: TWideStringField;
+    qWholeTeamAvg_Bowled: TFloatField;
+    qWholeTeamEco_Bowled: TFloatField;
+    qWholeTeamBowling_Ratting: TFloatField;
+    qPlayerStats_currentplayer_stats_currentPNum: TIntegerField;
+    qPlayerStats_currentDivision: TWideStringField;
+    qPlayerStats_currentTeam: TWideStringField;
+    qPlayerStats_currentRuns_Scored: TIntegerField;
+    qPlayerStats_currentMatches_Bat: TIntegerField;
+    qPlayerStats_currentMatches_Played: TIntegerField;
+    qPlayerStats_currentBatting_Balls: TIntegerField;
+    qPlayerStats_currentBatting_Strike: TFloatField;
+    qPlayerStats_currentBatting_Avg: TFloatField;
+    qPlayerStats_currentBatting_Ratting: TFloatField;
+    qPlayerStats_currentNumber_50: TIntegerField;
+    qPlayerStats_currentNumber_100: TIntegerField;
+    qPlayerStats_currentBatting_High: TIntegerField;
+    qPlayerStats_currentMatches_Bowled: TIntegerField;
+    qPlayerStats_currentNumber_5: TIntegerField;
+    qPlayerStats_currentOvers_Bowled: TFloatField;
+    qPlayerStats_currentWides_Bowled: TIntegerField;
+    qPlayerStats_currentNo_Bowled: TIntegerField;
+    qPlayerStats_currentRuns_Bowled: TIntegerField;
+    qPlayerStats_currentWickets: TIntegerField;
+    qPlayerStats_currentBest_Bowled: TWideStringField;
+    qPlayerStats_currentAvg_Bowled: TFloatField;
+    qPlayerStats_currentEco_Bowled: TFloatField;
+    qPlayerStats_currentBowling_Ratting: TFloatField;
+    qPlayerStats_currentplayerPNum: TAutoIncField;
+    qPlayerStats_currentNames: TWideStringField;
+    qPlayerStats_currentSurname: TWideStringField;
+    qPlayerStats_currentTelephone: TWideStringField;
+    qPlayerStats_currentDeleted: TBooleanField;
+    qPlayerStats_pastplayer_stats_pastPNum: TIntegerField;
+    qPlayerStats_pastDivision: TWideStringField;
+    qPlayerStats_pastTeam: TWideStringField;
+    qPlayerStats_pastRuns_Scored: TIntegerField;
+    qPlayerStats_pastMatches_Bat: TIntegerField;
+    qPlayerStats_pastMatches_Played: TIntegerField;
+    qPlayerStats_pastBatting_Balls: TIntegerField;
+    qPlayerStats_pastBatting_Strike: TFloatField;
+    qPlayerStats_pastBatting_Avg: TFloatField;
+    qPlayerStats_pastBatting_Ratting: TFloatField;
+    qPlayerStats_pastNumber_50: TIntegerField;
+    qPlayerStats_pastNumber_100: TIntegerField;
+    qPlayerStats_pastBatting_High: TIntegerField;
+    qPlayerStats_pastMatches_Bowled: TIntegerField;
+    qPlayerStats_pastNumber_5: TIntegerField;
+    qPlayerStats_pastOvers_Bowled: TFloatField;
+    qPlayerStats_pastWides_Bowled: TIntegerField;
+    qPlayerStats_pastNo_Bowled: TIntegerField;
+    qPlayerStats_pastRuns_Bowled: TIntegerField;
+    qPlayerStats_pastWickets: TIntegerField;
+    qPlayerStats_pastBest_Bowled: TWideStringField;
+    qPlayerStats_pastAvg_Bowled: TFloatField;
+    qPlayerStats_pastEco_Bowled: TFloatField;
+    qPlayerStats_pastBowling_Ratting: TFloatField;
+    qPlayerStats_pastplayerPNum: TAutoIncField;
+    qPlayerStats_pastNames: TWideStringField;
+    qPlayerStats_pastSurname: TWideStringField;
+    qPlayerStats_pastTelephone: TWideStringField;
+    qPlayerStats_pastDeleted: TBooleanField;
+    tbPlayer_Stats_currentStrike_Bowled: TFloatField;
+    qPlayerStats_currentStrike_Bowled: TFloatField;
+    tbPlayer_Stats_pastStrike_Bowled: TFloatField;
+    qPlayerStats_pastStrike_Bowled: TFloatField;
+    qUpdatePlayerStatsStrike_Bowled: TFloatField;
+    qUpdatePlayerStatsPastStrike_Bowled: TFloatField;
+    qWholeTeamStrike_Bowled: TFloatField;
+    qPlayerTeamsStrike_Bowled: TFloatField;
+  private
+    { Private declarations }
+  public
+    function getPlayerName(playerNumber : Integer) : String;
+  end;
+
+var
+  Database: TDatabase;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+function TDatabase.getPlayerName(playerNumber : Integer) : string;
+var SearchOptions : TLocateOptions;
+var team: String;
+begin
+  if Database.tbPlayer.Locate('PNum', playerNumber, SearchOptions) then
+     result := Database.tbPlayerNames.Text+' '+Database.tbPlayerSurname.Text
+    else
+      result := '';
+end;
+
+end.
